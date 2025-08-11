@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InvenEase Grocery Store - POS System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>InvenEase Grocery Store</span>
+                </div>
+                <div class="header-actions">
+                    <button id="lowStockBtn" class="btn btn-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Low Stock
+                    </button>
+                    <button id="reportsBtn" class="btn btn-info">
+                        <i class="fas fa-chart-bar"></i>
+                        Reports
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Navigation Tabs -->
+            <nav class="tabs">
+                <button class="tab-btn active" data-tab="pos">POS Sale</button>
+                <button class="tab-btn" data-tab="products">Products</button>
+                <button class="tab-btn" data-tab="inventory">Inventory</button>
+                <button class="tab-btn" data-tab="receipts">Receipts</button>
+            </nav>
+
+            <!-- POS Sale Tab -->
+            <div id="pos" class="tab-content active">
+                <div class="pos-container">
+                    <div class="pos-left">
+                        <div class="barcode-scanner">
+                            <input type="text" id="barcodeInput" placeholder="Scan or enter barcode" autofocus>
+                            <button id="manualAddBtn" class="btn btn-secondary">Manual Add</button>
+                        </div>
+                        
+                        <div class="cart">
+                            <h3>Shopping Cart</h3>
+                            <div id="cartItems" class="cart-items"></div>
+                            <div class="cart-total">
+                                <div class="total-line">
+                                    <span>Subtotal:</span>
+                                    <span id="subtotal">₹0.00</span>
+                                </div>
+                                <div class="total-line">
+                                    <span>GST:</span>
+                                    <span id="gstAmount">₹0.00</span>
+                                </div>
+                                <div class="total-line total">
+                                    <span>Total:</span>
+                                    <span id="totalAmount">₹0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pos-right">
+                        <div class="payment-section">
+                            <h3>Payment</h3>
+                            <div class="payment-methods">
+                                <button class="payment-btn active" data-method="Cash">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    Cash
+                                </button>
+                                <button class="payment-btn" data-method="Card">
+                                    <i class="fas fa-credit-card"></i>
+                                    Card
+                                </button>
+                                <button class="payment-btn" data-method="UPI">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    UPI
+                                </button>
+                            </div>
+                            
+                            <div class="customer-info">
+                                <input type="text" id="customerPhone" placeholder="Customer Phone (Optional)">
+                            </div>
+
+                            <div class="action-buttons">
+                                <button id="clearCartBtn" class="btn btn-secondary">Clear Cart</button>
+                                <button id="processPaymentBtn" class="btn btn-success">Process Payment</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Tab -->
+            <div id="products" class="tab-content">
+                <div class="products-header">
+                    <h2>Product Management</h2>
+                    <button id="addProductBtn" class="btn btn-primary">Add Product</button>
+                </div>
+                
+                <div class="search-bar">
+                    <input type="text" id="productSearch" placeholder="Search products...">
+                    <select id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="Groceries">Groceries</option>
+                        <option value="Dairy">Dairy</option>
+                        <option value="Beverages">Beverages</option>
+                        <option value="Snacks">Snacks</option>
+                        <option value="Personal Care">Personal Care</option>
+                        <option value="Household">Household</option>
+                        <option value="Fruits & Vegetables">Fruits & Vegetables</option>
+                    </select>
+                </div>
+
+                <div id="productsTable" class="data-table"></div>
+            </div>
+
+            <!-- Inventory Tab -->
+            <div id="inventory" class="tab-content">
+                <div class="inventory-header">
+                    <h2>Inventory Management</h2>
+                    <button id="updateStockBtn" class="btn btn-primary">Update Stock</button>
+                </div>
+                
+                <div id="inventoryTable" class="data-table"></div>
+            </div>
+
+            <!-- Receipts Tab -->
+            <div id="receipts" class="tab-content">
+                <div class="receipts-header">
+                    <h2>Sales History</h2>
+                    <input type="date" id="dateFilter">
+                </div>
+                
+                <div id="receiptsTable" class="data-table"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add Product</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="productForm">
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" name="name" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Barcode</label>
+                        <input type="text" name="barcode" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Price (₹)</label>
+                        <input type="number" name="price" step="0.01" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Stock Quantity</label>
+                        <input type="number" name="stock_quantity" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select name="category" required>
+                            <option value="Groceries">Groceries</option>
+                            <option value="Dairy">Dairy</option>
+                            <option value="Beverages">Beverages</option>
+                            <option value="Snacks">Snacks</option>
+                            <option value="Personal Care">Personal Care</option>
+                            <option value="Household">Household</option>
+                            <option value="Fruits & Vegetables">Fruits & Vegetables</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>HSN Code</label>
+                        <input type="text" name="hsn_code">
+                    </div>
+                    <div class="form-group">
+                        <label>GST Rate (%)</label>
+                        <select name="gst_rate">
+                            <option value="0">0%</option>
+                            <option value="5">5%</option>
+                            <option value="12">12%</option>
+                            <option value="18">18%</option>
+                            <option value="28">28%</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="receiptModal" class="modal">
+        <div class="modal-content receipt-modal">
+            <div class="modal-header">
+                <h3>Receipt</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div id="receiptContent" class="receipt-content"></div>
+            <div class="modal-actions">
+                <button id="printReceiptBtn" class="btn btn-primary">Print</button>
+                <button id="emailReceiptBtn" class="btn btn-secondary">Email</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
