@@ -1,0 +1,16 @@
+{
+  "name": "InvenEase Grocery Store POS",
+  "short_name": "GroceryPOS",
+  "description": "Point of Sale system for grocery stores",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjMjU2M2ViIi8+CjxwYXRoIGQ9Ik05NiA0OEM4NC45NTQzIDQ4IDc2IDU2Ljk1NDMgNzYgNjhWODhIOTZWNjhIOTZWNDhaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMTE2IDQ4QzEyNy4wNDYgNDggMTM2IDU2Ljk1NDMgMTM2IDY4Vjg4SDExNlY2OEgxMTZWNDhaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNNTYgNzhIMTU2Qzk2IDc4IDU2IDk4IDU2IDEzNFYxNDRIOTZIMTU2VjEzNEM5NiAxMzQgNTYgMTE0IDU2IDc4WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}
