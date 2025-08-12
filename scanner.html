@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Store - Barcode Scanner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            padding-top: 20px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .scanner-container {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+            flex: 1;
+        }
+        
+        .camera-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 3px solid #2563eb;
+        }
+        
+        #scanner {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .scanning-line {
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: #2563eb;
+            animation: scan 2s ease-in-out infinite;
+            opacity: 0.8;
+        }
+        
+        @keyframes scan {
+            0%, 100% { transform: translateY(-50px); opacity: 0; }
+            50% { transform: translateY(0); opacity: 1; }
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #4b5563;
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .status {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .status.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 2px solid #10b981;
+        }
+        
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 2px solid #ef4444;
+        }
+        
+        .status.info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 2px solid #2563eb;
+        }
+        
+        .cart-preview {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-info {
+            flex: 1;
+        }
+        
+        .item-name {
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .item-details {
+            font-size: 0.9em;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+        
+        .item-price {
+            font-weight: 700;
+            color: #2563eb;
+            font-size: 1.1em;
+        }
+        
+        .cart-total {
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #2563eb;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #2563eb;
+        }
+        
+        .permissions-prompt {
+            text-align: center;
+            padding: 30px;
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .permissions-prompt h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+        
+        .permissions-prompt p {
+            color: #6c5a00;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .camera-container {
+                height: 250px;
+            }
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>My Store</h1>
+            <p>Mobile Barcode Scanner</p>
+        </div>
+        
+        <div class="scanner-container">
+            <div id="status" class="status info">
+                Ready to scan barcodes
+            </div>
+            
+            <div id="permissions-prompt" class="permissions-prompt hidden">
+                <h3>📹 Camera Access Required</h3>
+                <p>Please allow camera access to scan barcodes</p>
+                <button class="btn btn-primary" onclick="requestCameraPermission()">
+                    Enable Camera
+                </button>
+            </div>
+            
+            <div class="camera-container" id="camera-container">
+                <div id="scanner"></div>
+                <div class="scanning-line" id="scanning-line"></div>
+            </div>
+            
+            <div class="controls">
+                <button class="btn btn-primary" id="start-btn" onclick="startScanning()">
+                    🔍 Start Scanning
+                </button>
+                <button class="btn btn-secondary" id="stop-btn" onclick="stopScanning()" disabled>
+                    ⏹️ Stop Scanning
+                </button>
+                <button class="btn btn-secondary" onclick="clearCart()">
+                    🗑️ Clear Cart
+                </button>
+            </div>
+        </div>
+        
+        <div class="cart-preview">
+            <h3 style="margin-bottom: 15px; color: #374151;">Shopping Cart</h3>
+            <div id="cart-items">
+                <p style="text-align: center; color: #6b7280; font-style: italic;">Cart is empty</p>
+            </div>
+            <div class="cart-total" id="cart-total">
+                Total: $0.00
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+    <script src="pos-scanner.js"></script>
+</body>
+</html>
