@@ -1,0 +1,16 @@
+{
+  "name": "grocery-pos-saas",
+  "version": "1.0.0",
+  "description": "Complete Grocery POS SaaS Web Application",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "serve": "npx serve ."
+  },
+  "keywords": ["grocery", "pos", "saas", "retail", "inventory"],
+  "author": "InvenEase",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.0.0"
+  }
+}
